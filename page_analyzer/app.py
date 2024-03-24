@@ -30,10 +30,10 @@ def create_url():
     try:
         url_db_service.create_url(url=request.form["url"])
     except InvalidUrlException as exc:
-        flash(str(exc), "danger")
+        flash("Страница уже существует", "danger")
         return render_template("index.html", url_name=request.form["url"]), 422
     else:
-        flash("Page was successfully added!", "success")
+        flash("Страница успешно добавлена", "success")
         return redirect(url_for("get_list_urls"))
 
 

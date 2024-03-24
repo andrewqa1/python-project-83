@@ -4,7 +4,7 @@ from analyzer.models import Url, UrlCheck
 app = Flask(__name__)
 
 with app.app_context():
-    from config import SETTINGS_CONFIG, load_settings
+    from analyzer.config import SETTINGS_CONFIG, load_settings
 
     load_settings(app, SETTINGS_CONFIG)
 

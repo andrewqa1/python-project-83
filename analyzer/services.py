@@ -4,7 +4,7 @@ import psycopg2.errors
 import requests
 from bs4 import BeautifulSoup
 from analyzer.models import Url, UrlCheck, UrlCheckId, UrlId, UrlWithLastCheck
-from validators import UrlCheckDbValidator, UrlCheckHttpValidator, UrlDbValidator
+from analyzer.validators import UrlCheckDbValidator, UrlCheckHttpValidator, UrlDbValidator
 
 from analyzer.db import Database
 from analyzer.exceptions import (

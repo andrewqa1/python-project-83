@@ -1,4 +1,4 @@
-from validators import UrlCheckDbValidator, UrlCheckHttpValidator, UrlDbValidator
+from analyzer.validators import UrlCheckDbValidator, UrlCheckHttpValidator, UrlDbValidator
 
 from analyzer.app import app
 from analyzer.db import Database

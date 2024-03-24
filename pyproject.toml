@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "hexlet-code"
+version = "0.1.0"
+description = ""
+authors = ["ruagcaz <Andrey.GLADCHENKO@raiffeisen.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "^2.3.2"
+psycopg2-binary = "^2.9.5"
+python-dotenv = "^0.21.0"
+beautifulsoup4 = "^4.11.1"
+requests="^2.28.1"
+urlparse = "*"
+gunicorn = "^21.2.0"
+
+
+[tool.poetry.dev-dependencies]
+flake8 = "^6.1.0"
+pytest = "^7.1.2"
+pytest-cov = "^4.1.0"
+coveralls = "^3.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

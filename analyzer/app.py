@@ -1,5 +1,5 @@
 from flask import Flask, abort, flash, redirect, render_template, request, url_for
-from models import Url, UrlCheck
+from analyzer.models import Url, UrlCheck
 
 app = Flask(__name__)
 

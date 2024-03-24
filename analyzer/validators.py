@@ -1,9 +1,7 @@
-from typing import Literal, get_args
 from urllib.parse import urlparse
+
 import requests
 from requests.exceptions import RequestException
-
-from exceptions import InvalidUrlCheckException
 
 
 class UrlDbValidator:
@@ -32,7 +30,7 @@ class UrlCheckDbValidator:
     def validate(self, url_check: dict) -> bool:
         try:
             is_valid_status = isinstance(url_check["status_code"], int) and (
-                    100 <= url_check["status_code"] <= 526
+                100 <= url_check["status_code"] <= 526
             )
             is_valid_description = isinstance(url_check["description"], str)
             is_valid_h1 = isinstance(url_check["h1"], str)
@@ -41,4 +39,6 @@ class UrlCheckDbValidator:
         except KeyError:
             return False
         else:
-            return all([is_valid_status, is_valid_description, is_valid_title, is_valid_h1])
+            return all(
+                [is_valid_status, is_valid_description, is_valid_title, is_valid_h1]
+            )

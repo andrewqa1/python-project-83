@@ -3,11 +3,11 @@ from datetime import datetime
 import psycopg2.errors
 import requests
 from bs4 import BeautifulSoup
-from analyzer.models import Url, UrlCheck, UrlCheckId, UrlId, UrlWithLastCheck
-from analyzer.validators import UrlCheckDbValidator, UrlCheckHttpValidator, UrlDbValidator
+from page_analyzer.models import Url, UrlCheck, UrlCheckId, UrlId, UrlWithLastCheck
+from page_analyzer.validators import UrlCheckDbValidator, UrlCheckHttpValidator, UrlDbValidator
 
-from analyzer.db import Database
-from analyzer.exceptions import (
+from page_analyzer.db import Database
+from page_analyzer.exceptions import (
     InvalidUrlCheckException,
     InvalidUrlException,
     UrlCheckHttpFailedException,

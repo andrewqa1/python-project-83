@@ -8,12 +8,12 @@ with app.app_context():
 
     load_settings(app, SETTINGS_CONFIG)
 
-    from analyzer.containers import (
+    from page_analyzer.containers import (
         url_check_db_service,
         url_check_http_service,
         url_db_service,
     )
-    from analyzer.exceptions import (
+    from page_analyzer.exceptions import (
         InvalidUrlCheckException,
         InvalidUrlException,
         UrlCheckHttpFailedException,

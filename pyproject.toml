@@ -3,7 +3,7 @@ name = "hexlet-code"
 version = "0.1.0"
 description = ""
 authors = ["ruagcaz <Andrey.GLADCHENKO@raiffeisen.ru>"]
-packages = [{include = "analyzer"}]
+packages = [{include = "page_analyzer"}]
 readme = "README.md"
 
 [tool.poetry.dependencies]

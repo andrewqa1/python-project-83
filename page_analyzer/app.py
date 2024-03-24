@@ -1,10 +1,10 @@
 from flask import Flask, abort, flash, redirect, render_template, request, url_for
-from analyzer.models import Url, UrlCheck
+from page_analyzer.models import Url, UrlCheck
 
 app = Flask(__name__)
 
 with app.app_context():
-    from analyzer.config import SETTINGS_CONFIG, load_settings
+    from page_analyzer.config import SETTINGS_CONFIG, load_settings
 
     load_settings(app, SETTINGS_CONFIG)
 

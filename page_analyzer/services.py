@@ -1,6 +1,6 @@
 from datetime import datetime
 
-import psycopg2.errors
+import psycopg2
 import requests
 from bs4 import BeautifulSoup
 

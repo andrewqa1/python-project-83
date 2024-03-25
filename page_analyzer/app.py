@@ -29,13 +29,13 @@ def index():
 @app.route("/urls", methods=["POST"])
 def create_url():
     try:
-        url_db_service.create_url(url=request.form["url"])
+        url_id = url_db_service.create_url(url=request.form["url"])
     except InvalidUrlException as exc:
         flash(str(exc), "danger")
         return render_template("index.html", url_name=request.form["url"]), 422
     else:
         flash("Страница успешно добавлена", "success")
-        return redirect(url_for("get_list_urls"))
+        return redirect(url_for("get_url", ind=url_id))
 
 
 @app.route("/urls", methods=["GET"])

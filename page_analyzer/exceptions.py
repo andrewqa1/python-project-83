@@ -1,13 +1,23 @@
-class InvalidUrlException(Exception):
+class BaseUrlException(Exception):
     def __init__(self, detail: str) -> None:
         super().__init__(detail)
 
 
-class InvalidUrlCheckException(Exception):
-    def __init__(self, detail: str) -> None:
-        super().__init__(detail)
+class InvalidUrlException(BaseUrlException):
+    pass
 
 
-class UrlCheckHttpFailedException(Exception):
-    def __init__(self, detail: str) -> None:
-        super().__init__(detail)
+class InvalidUrlInsertionException(BaseUrlException):
+    pass
+
+
+class InvalidUrlCheckException(BaseUrlException):
+    pass
+
+
+class InvalidUrlCheckInsertionException(BaseUrlException):
+    pass
+
+
+class UrlCheckHttpFailedException(BaseUrlException):
+    pass

@@ -5,17 +5,15 @@ import requests
 from bs4 import BeautifulSoup
 
 from page_analyzer.db import Database
-from page_analyzer.exceptions import (
-    InvalidUrlCheckException,
-    InvalidUrlException,
-    UrlCheckHttpFailedException,
-)
-from page_analyzer.models import Url, UrlCheck, UrlCheckId, UrlId, UrlWithLastCheck
-from page_analyzer.validators import (
-    UrlCheckDbValidator,
-    UrlCheckHttpValidator,
-    UrlDbValidator,
-)
+from page_analyzer.exceptions import (InvalidUrlCheckException,
+                                      InvalidUrlCheckInsertionException,
+                                      InvalidUrlException,
+                                      InvalidUrlInsertionException,
+                                      UrlCheckHttpFailedException)
+from page_analyzer.models import (Url, UrlCheck, UrlCheckId, UrlId,
+                                  UrlWithLastCheck)
+from page_analyzer.validators import (UrlCheckDbValidator,
+                                      UrlCheckHttpValidator, UrlDbValidator)
 
 
 class UrlDbService:
@@ -30,7 +28,9 @@ class UrlDbService:
                 query = f"INSERT INTO urls (name, created_at) VALUES ('{normalized}', '{datetime.now()}') RETURNING id;"
                 returned = self.database.fetch_val(query=query)
             except psycopg2.IntegrityError as exc:
-                raise InvalidUrlException(detail="Страница уже существует") from exc
+                raise InvalidUrlInsertionException(
+                    detail="Страница уже существует"
+                ) from exc
             else:
                 return returned.id
         else:
@@ -44,8 +44,21 @@ class UrlDbService:
             for url in returned_urls
         ]
 
-    def get_url(self, ind: int) -> Url | None:
+    def get_url_by_id(self, ind: int) -> Url | None:
         query = f"SELECT id, name, created_at FROM urls WHERE id = {ind}"
+        returned_url = self.database.fetch_val(query=query)
+        return (
+            Url(
+                id=returned_url.id,
+                name=returned_url.name,
+                created_at=returned_url.created_at,
+            )
+            if returned_url
+            else None
+        )
+
+    def get_url_by_name(self, name: str) -> Url | None:
+        query = f"SELECT id, name, created_at FROM urls WHERE name = '{self.validator.normalize(name)}'"
         returned_url = self.database.fetch_val(query=query)
         return (
             Url(
@@ -96,7 +109,7 @@ class UrlCheckDbService:
                 )
                 returned = self.database.fetch_val(query=query)
             except psycopg2.Error as exc:
-                raise InvalidUrlCheckException(
+                raise InvalidUrlCheckInsertionException(
                     detail="Ошибка вставки urlcheck"
                 ) from exc
             else:

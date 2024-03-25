@@ -3,14 +3,18 @@ from datetime import datetime
 import psycopg2.errors
 import requests
 from bs4 import BeautifulSoup
-from page_analyzer.models import Url, UrlCheck, UrlCheckId, UrlId, UrlWithLastCheck
-from page_analyzer.validators import UrlCheckDbValidator, UrlCheckHttpValidator, UrlDbValidator
 
 from page_analyzer.db import Database
 from page_analyzer.exceptions import (
     InvalidUrlCheckException,
     InvalidUrlException,
     UrlCheckHttpFailedException,
+)
+from page_analyzer.models import Url, UrlCheck, UrlCheckId, UrlId, UrlWithLastCheck
+from page_analyzer.validators import (
+    UrlCheckDbValidator,
+    UrlCheckHttpValidator,
+    UrlDbValidator,
 )
 
 
@@ -21,15 +25,16 @@ class UrlDbService:
 
     def create_url(self, url: str) -> UrlId | None:
         if self.validator.validate(url):
+            normalized = self.validator.normalize(url)
             try:
-                query = f"INSERT INTO urls (name, created_at) VALUES ('{url}', '{datetime.now()}') RETURNING id;"
+                query = f"INSERT INTO urls (name, created_at) VALUES ('{normalized}', '{datetime.now()}') RETURNING id;"
                 returned = self.database.fetch_val(query=query)
             except psycopg2.IntegrityError as exc:
-                raise InvalidUrlException(detail=f"URL {url} already exists!") from exc
+                raise InvalidUrlException(detail="Страница уже существует") from exc
             else:
                 return returned.id
         else:
-            raise InvalidUrlException(detail=f"Invalid URL {url} format!")
+            raise InvalidUrlException(detail="Некорректный URL")
 
     def list_urls(self) -> list[Url]:
         query = "SELECT id, name, created_at FROM urls;"
@@ -92,14 +97,12 @@ class UrlCheckDbService:
                 returned = self.database.fetch_val(query=query)
             except psycopg2.Error as exc:
                 raise InvalidUrlCheckException(
-                    detail=f"Error inserting url check!"
+                    detail="Ошибка вставки urlcheck"
                 ) from exc
             else:
                 return returned.id
         else:
-            raise InvalidUrlCheckException(
-                detail=f"Invalid url check {url_check} format!"
-            )
+            raise InvalidUrlCheckException(detail="Некорректный urlcheck")
 
     def get_url_checks(self, url_id: int) -> list[UrlCheck] | None:
         query = (
@@ -143,4 +146,4 @@ class UrlCheckHttpService:
             }
 
         else:
-            raise UrlCheckHttpFailedException(detail=f"Check for {url} failed!")
+            raise UrlCheckHttpFailedException(detail="Произошла ошибка при проверке")

@@ -1,4 +1,5 @@
 from flask import Flask, abort, flash, redirect, render_template, request, url_for
+
 from page_analyzer.models import Url, UrlCheck
 
 app = Flask(__name__)
@@ -30,7 +31,7 @@ def create_url():
     try:
         url_db_service.create_url(url=request.form["url"])
     except InvalidUrlException as exc:
-        flash("Страница уже существует", "danger")
+        flash(str(exc), "danger")
         return render_template("index.html", url_name=request.form["url"]), 422
     else:
         flash("Страница успешно добавлена", "success")

@@ -8,8 +8,13 @@ class UrlDbValidator:
     def __init__(self) -> None:
         self.validator = urlparse
 
+    def normalize(self, url: str) -> str:
+        scheme = self.validator(url)
+        return f"{scheme.scheme.lower()}://{scheme.netloc.lower()}"
+
     def validate(self, url: str) -> bool:
-        return bool(self.validator(url).scheme) and url
+        scheme = self.validator(url)
+        return scheme.scheme in ("http", "https") and bool(scheme.netloc)
 
 
 class UrlCheckHttpValidator:
